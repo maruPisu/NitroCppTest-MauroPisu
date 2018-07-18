@@ -1,1 +1,1 @@
-##Rectangle intersection for Nitro##
+## Rectangle intersection for Nitro
