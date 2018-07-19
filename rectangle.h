@@ -13,13 +13,31 @@ public:
 	Rectangle(int x, int y, int width, int height);
 
 	/**
+	* Creates an empty Rectangle Object
+	*/
+	Rectangle();
+
+	/**
 	* Gives back the text version of this Rectangle's attributes
 	*/
 	std::string stringify();
+
+	/**
+	* Check the intersection between this and other, and returns the Rectangle of that intersection
+	*/
+	Rectangle intersection(const Rectangle& other);
+
+	/**
+	* Returns the value of the variable m_empty
+	*/
+	bool isEmpty();
+
 
 private:
 	int m_x = 0;
 	int m_y = 0;
 	int m_w = 0;
 	int m_h = 0;
+
+	bool m_empty = false;
 };
