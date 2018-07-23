@@ -20,18 +20,22 @@ public:
 	/**
 	* Gives back the text version of this Rectangle's attributes
 	*/
-	std::string stringify();
+	std::string stringify() const;
 
 	/**
-	* Check the intersection between this and other, and returns the Rectangle of that intersection
+	* Checks the intersection between this and other, and returns the Rectangle of that intersection
 	*/
-	Rectangle intersection(const Rectangle& other);
+	Rectangle intersection(const Rectangle& other) const;
 
 	/**
 	* Returns the value of the variable m_empty
 	*/
-	bool isEmpty();
+	bool isEmpty() const;
 
+	/**
+	* empty Rectangle
+	*/
+	const static Rectangle emptyRectangle;
 
 private:
 	int m_x = 0;
