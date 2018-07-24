@@ -1,0 +1,2 @@
+add_subdirectory(rectangle_lib)
+add_subdirectory(intersection)
