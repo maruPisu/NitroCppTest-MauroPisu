@@ -20,7 +20,7 @@ std::string Rectangle::stringify() const{
 	if(isEmpty()){
 		return "empty rectangle\n";
 	}
-	auto oss = std::ostringstream();
+	std::ostringstream oss;
 	oss
 	   << "(" << m_x << "," << m_y << "), "
 	   << "w=" << m_w << ", h=" << m_h
