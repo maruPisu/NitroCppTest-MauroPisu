@@ -1,5 +1,8 @@
 #include "rectangle.h"
 #include <iostream>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 int main(){
 	Rectangle rec(5, 3, 30, 15);
