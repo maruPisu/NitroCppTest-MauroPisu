@@ -31,41 +31,60 @@ int main(int argc, char *argv[])
 	}
 	else 
 	{
-		cout << "Unable to open file"; 
+		cout << "Unable to open file " << filename << endl;
 		exit(0);
 	}
 
 	Document document;
 	document.Parse(raw.c_str());
-	assert(document.IsObject());
-	assert(document.HasMember("rects"));
-	assert(document["rects"].IsArray());
+	if(!document.IsObject()){
+		//malformed json
+		cout << "malformed json" << endl;
+		exit(0);
+	}
+	if(!document.HasMember("rects")){
+		//root element missing
+		cout << "rects element missing" << endl;
+		exit(0);
+	}
+	if(!document["rects"].IsArray()){
+		//root element should be array
+		cout << "rects should be an array" << endl;
+		exit(0);
+	}
 
 	std::vector<Rectangle> rectangles;
 
 	cout << "Input:\n";
 	const auto& rects = document["rects"];
 	for (auto itr = rects.Begin(); itr != rects.End(); ++itr){
-		assert(itr->HasMember("x"));
-		assert(itr->HasMember("y"));
-		assert(itr->HasMember("w"));
-		assert(itr->HasMember("h"));
+		if(
+			!itr->HasMember("x") ||
+			!itr->HasMember("y") ||
+			!itr->HasMember("w") ||
+			!itr->HasMember("h"))
+		{
+			//this rectangle is malformed
+			continue;
+		}
 
-		cout << " x: " << (*itr)["x"].GetInt();
-		cout << " y: " << (*itr)["y"].GetInt();
-		cout << " w: " << (*itr)["w"].GetInt();
-		cout << " h: " << (*itr)["h"].GetInt();
-		cout << endl;
-
-		rectangles.push_back({
-			(*itr)["x"].GetInt(), 
-			(*itr)["y"].GetInt(), 
-			(*itr)["w"].GetInt(), 
-			(*itr)["h"].GetInt()
-		});
-		std::cout << rectangles.back().stringify() << endl;
+		if(
+			(*itr)["x"].IsInt() &&
+			(*itr)["y"].IsInt() &&
+			(*itr)["w"].IsInt() &&
+			(*itr)["h"].IsInt())
+		{
+			rectangles.push_back({
+				(*itr)["x"].GetInt(), 
+				(*itr)["y"].GetInt(), 
+				(*itr)["w"].GetInt(), 
+				(*itr)["h"].GetInt()
+			});
+			std::cout << rectangles.back().stringify();
+		}
 	}
 
+	cout << "Output:\n";
 	for (auto it1 = rectangles.begin(); (it1 != rectangles.end()); it1++)
 	{
 		for (auto it2 = it1 + 1; (it2 != rectangles.end()); it2++)

@@ -18,11 +18,12 @@ Rectangle::Rectangle()
 
 std::string Rectangle::stringify() const{
 	if(isEmpty()){
-		return "empty rectangle\n";
+		return "";
+		//return "empty rectangle\n";
 	}
 	std::ostringstream oss;
 	oss
-	   << "(" << m_x << "," << m_y << "), "
+	   << "\t(" << m_x << "," << m_y << "), "
 	   << "w=" << m_w << ", h=" << m_h
  	   << std::endl;
 
