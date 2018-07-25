@@ -1,7 +1,7 @@
 #include <sstream>
 #include "rectangle.h"
 
-const Rectangle Rectangle::emptyRectangle = Rectangle();
+const Rectangle Rectangle::emptyRectangle;
 
 Rectangle::Rectangle(int x, int y, int width, int height)
 	:m_x(x), m_y(y), m_w(width), m_h(height), m_empty(false)
@@ -23,7 +23,7 @@ std::string Rectangle::stringify() const{
 	}
 	std::ostringstream oss;
 	oss
-	   << "\t(" << m_x << "," << m_y << "), "
+	   << "(" << m_x << "," << m_y << "), "
 	   << "w=" << m_w << ", h=" << m_h
  	   << std::endl;
 
@@ -33,13 +33,15 @@ std::string Rectangle::stringify() const{
 Rectangle Rectangle::intersection(const Rectangle& other) const{
 
 	//if one or both rectangles are empty, return empty Rectangle
-	if(this->isEmpty() or other.isEmpty()){
+	if(this->isEmpty() or other.isEmpty())
+	{
 		return Rectangle::emptyRectangle;
 	}
 
 	//check if the 2 Rectangle intersect
 	if( this->m_x + this->m_w <= other.m_x or other.m_x + other.m_w <= this->m_x or 
-		this->m_y + this->m_h <= other.m_y or other.m_y + other.m_h <= this->m_y ){
+		this->m_y + this->m_h <= other.m_y or other.m_y + other.m_h <= this->m_y )
+	{
 		// No intersection
 		return Rectangle::emptyRectangle;
 	}
@@ -63,4 +65,20 @@ Rectangle Rectangle::intersection(const Rectangle& other) const{
 
 bool Rectangle::isEmpty() const{
 	return m_empty;
+}
+
+int Rectangle::getX(){
+	return m_x;
+}
+
+int Rectangle::getY(){
+	return m_y;
+}
+
+int Rectangle::getW(){
+	return m_w;
+}
+
+int Rectangle::getH(){
+	return m_h;
 }
