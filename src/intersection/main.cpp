@@ -1,6 +1,7 @@
 #include "rectangle.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -40,25 +41,38 @@ int main(int argc, char *argv[])
 	assert(document.HasMember("rects"));
 	assert(document["rects"].IsArray());
 
+	std::vector<Rectangle> rectangles;
+
+	cout << "Input:\n";
 	const auto& rects = document["rects"];
 	for (auto itr = rects.Begin(); itr != rects.End(); ++itr){
 		assert(itr->HasMember("x"));
 		assert(itr->HasMember("y"));
 		assert(itr->HasMember("w"));
 		assert(itr->HasMember("h"));
+
 		cout << " x: " << (*itr)["x"].GetInt();
 		cout << " y: " << (*itr)["y"].GetInt();
 		cout << " w: " << (*itr)["w"].GetInt();
 		cout << " h: " << (*itr)["h"].GetInt();
 		cout << endl;
-	}
-  
-	Rectangle rec(5, 3, 30, 15);
-	Rectangle big(15, 13, 10, 10);
 
-	std::cout << rec.stringify();
-	std::cout << big.stringify();
-	auto inter = rec.intersection(big);
-	std::cout << inter.stringify();
+		rectangles.push_back({
+			(*itr)["x"].GetInt(), 
+			(*itr)["y"].GetInt(), 
+			(*itr)["w"].GetInt(), 
+			(*itr)["h"].GetInt()
+		});
+		std::cout << rectangles.back().stringify() << endl;
+	}
+
+	for (auto it1 = rectangles.begin(); (it1 != rectangles.end()); it1++)
+	{
+		for (auto it2 = it1 + 1; (it2 != rectangles.end()); it2++)
+		{
+			auto inter = it1->intersection(*it2);
+			std::cout << inter.stringify();
+		}
+	}
     return 0;
 }
