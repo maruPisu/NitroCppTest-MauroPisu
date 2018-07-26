@@ -14,10 +14,11 @@ sudo apt-get install rapidjson
 Mac Users can use brew
 ```
 brew install rapidjson
-
 ```
 ### boost
-Make sure you have boost installed in your machine
+Make sure you have boost installed in your machine.
+
+All the tools described above provide functionalities to install boost
 ## Build & Run
 Once the project is cloned, I suggest to `cd` in the main folder. 
 
