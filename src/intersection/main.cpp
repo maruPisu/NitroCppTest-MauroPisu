@@ -9,12 +9,6 @@
 using namespace std;
 using namespace rapidjson;
 
-struct indexedRectangle
-{
-	int index = 0;
-	Rectangle rect;
-};
-
 int main(int argc, char *argv[]){
 	if(argc < 2)
 	{
@@ -61,7 +55,7 @@ int main(int argc, char *argv[]){
 		exit(0);
 	}
 
-	std::vector<indexedRectangle> rectangles;
+	std::vector<Rectangle> rectangles;
 
 	//read rectangles
 	int currentLabel = 0;
@@ -86,16 +80,17 @@ int main(int argc, char *argv[]){
 			(*itr)["h"].IsInt())
 		{
 			//everything is fine. create the rectangle
-			indexedRectangle insertRectangle;
-			
-			insertRectangle.index = ++currentLabel;
-			insertRectangle.rect = Rectangle(
+			Rectangle insertRectangle{
 				(*itr)["x"].GetInt(), 
 				(*itr)["y"].GetInt(), 
 				(*itr)["w"].GetInt(), 
-				(*itr)["h"].GetInt());
-			rectangles.push_back(insertRectangle);
-			std::cout << "\t" << rectangles.back().index << ": " << rectangles.back().rect.stringify();
+				(*itr)["h"].GetInt(),
+				to_string(++currentLabel)};
+				
+			if(!insertRectangle.isEmpty()){
+				rectangles.push_back(insertRectangle);
+				cout << "\t" << insertRectangle.getLabel() << ": Rectangle at " << insertRectangle.stringify();
+			}
 		}
 		if(currentLabel >= 10 )
 		{
@@ -104,22 +99,11 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-	// find the intersections
-	cout << "Output:\n";
-	for (auto it1 = rectangles.begin(); (it1 != rectangles.end()); it1++)
-	{
-		for (auto it2 = it1 + 1; (it2 != rectangles.end()); it2++)
-		{
-			auto inter = it1->rect.intersection(it2->rect);
-			if(inter.isEmpty())
-			{
-				// if the intersection is an empty rectangle, skip
-				continue;
-			}
-			std::cout << "\tBetween rectangle " << it1->index
-			<< " and " << it2->index << " at "
-			<< inter.stringify();
-		}
+	cout << "\nIntersections:\n";
+	auto intersections = Rectangle::intersect(rectangles);
+	for(auto intersection: intersections){
+		cout << "\tBetween Rectangles " << intersection.stringifyInvolved();
+		cout << " at " << intersection.area.stringify();
 	}
     return 0;
 }
