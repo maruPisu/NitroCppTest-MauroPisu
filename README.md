@@ -1,4 +1,4 @@
-# Rectangle intersection for Nitro
+# Rectangle intersection
 ## Dependencies
 ### rapidjson
 Make sure you have rapidjson installed on your machine.
